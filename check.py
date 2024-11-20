@@ -18,7 +18,7 @@ def check_telegram_username(username):
             soup = BeautifulSoup(response.text, "html.parser")
             
             # Ищем признаки отсутствия пользователя
-            if f"If you have Telegram, you can contact @{username} right away." in soup.text or "Свежие новости" in soup.text:
+            if f"If you have Telegram, you can contact @{username} right away." in soup.text or f"@{username}" not in soup.text:
                 return False  # Пользователь не существует
             
             # Если текст ошибки не найден, пользователь существует
@@ -56,4 +56,4 @@ def sendData(data):
     except Error as e:
         print(f"Error: {e}")  # Выводим описание ошибки
         return False
-sendData({"name":"user","mmr":"1200","tg_name":"213"})
+print(check_telegram_username("111"))
