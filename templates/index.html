@@ -29,9 +29,9 @@
             }
         }
         function sendData(){
-            name = document.getElementsByName("nameInput")[0].textContent;
-            mmr = document.getElementsByName("mmrInput")[0].textContent;
-            tgname = document.getElementsByName("tgInput")[0].textContent;
+            name = document.getElementsByName("nameInput")[0].value;
+            mmr = document.getElementsByName("mmrInput")[0].value;
+            tgname = document.getElementsByName("tgInput")[0].value;
             const dataToSend = {
                 'name': name,
                 'mmr':mmr,
@@ -56,7 +56,7 @@
             });
         }
         function CheckIsExsistTG(){
-            name = document.getElementsByName("nameInput")[0].textContent;
+            name = document.getElementsByName("tgInput")[0].value;
             const dataToSend = {
                 name: name
             };

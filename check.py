@@ -56,4 +56,4 @@ def sendData(data):
     except Error as e:
         print(f"Error: {e}")  # Выводим описание ошибки
         return False
-print(check_telegram_username("111"))
+print(check_telegram_username("capsLabss"))
