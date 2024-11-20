@@ -62,7 +62,6 @@
         }
         function CheckIsExsistTG(){
             name = document.getElementsByName("tgInput")[0].value;
-            console.log(name);
             const dataToSend = {
                 name: name
             };
@@ -88,6 +87,7 @@
             });
         }
         function CheckIsUnicueTg(name){
+            console.log("Запрос:" + name);
             const dataToSend = {
                 name: name
             };
@@ -100,6 +100,7 @@
             })
             .then(response => response.json())
             .then(data => {
+                console.log("Ответ сервера:" + data["acc_alright"]);
                 return data["acc_alright"];
             })
             .catch(error => {
