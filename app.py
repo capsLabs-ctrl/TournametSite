@@ -12,8 +12,6 @@ def checkTelegram():
         if data is None:
             return jsonify({"error": "Invalid input"}), 400
         username = data["name"]
-        mmr = data["mmr"]
-        tg = data["tgname"]
         result = check_telegram_username(username)
         return jsonify({"acc_exist":result}), 200
     except Exception as e:
@@ -25,8 +23,10 @@ def sendToDatabase():
         data = request.get_json()
         if not data or "inputs" not in data:
             return jsonify({"error": "Invalid input"}), 400
-        username = data["inputs"]
-        isOk = sendData()
+        username = data["name"]
+        mmr = data["mmr"]
+        tg = data["tgname"]
+        isOk = sendData({"name":username, "tg_name":tg, "mmr":mmr})
         return jsonify({"executed":isOk}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
