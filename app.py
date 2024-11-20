@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 import numpy as np
-from check import check_telegram_username, sendData
+from check import check_telegram_username, sendData, checkNameIsUnicue
 import os
 
 app = Flask(__name__)
@@ -14,6 +14,18 @@ def checkTelegram():
         username = data["name"]
         result = check_telegram_username(username)
         return jsonify({"acc_exist":result}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route('/check_tg_in_db', methods=['POST'])
+def checkTelegram():
+    try:
+        data = request.get_json()
+        if data is None:
+            return jsonify({"error": "Invalid input"}), 400
+        username = data["name"]
+        result = checkNameIsUnicue(username)
+        return jsonify({"acc_alright":result}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     

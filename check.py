@@ -56,4 +56,24 @@ def sendData(data):
     except Error as e:
         print(f"Error: {e}")  # Выводим описание ошибки
         return False
-print(check_telegram_username("capsLabss"))
+def checkNameIsUnicue(name):
+        # Устанавливаем соединение
+        connection = mysql.connector.connect(
+            host="bhihmdlzeva9nple8r0v-mysql.services.clever-cloud.com",
+            user="uluyy4kz85l4bapm",
+            password="CpGIFlfBYYkDtDltZSv8",
+            database="bhihmdlzeva9nple8r0v",
+            port=3306
+        )
+        cursor = connection.cursor()
+        # Запрос на вставку
+        query = F"SELECT * FROM Учасники WHERE Телеграм = '{name}'"
+        cursor.execute(query)
+# Получение всех строк
+        cursor.fetchall()
+# Количество строк, которые вернул запрос
+        row_count = cursor.rowcount 
+        cursor.close()
+        connection.close()
+        return row_count==0
+print(checkNameIsUnicue("capsLabs1s"))

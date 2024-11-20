@@ -71,11 +71,32 @@
             .then(data => {
                 ShowIsOk(data["acc_exist"]);
                 if(data["acc_exist"])
-                    sendData();
+                    if(CheckIsUnicueTg(name))
+                        sendData();
             })
             .catch(error => {
                 console.error('Ошибка:', error);
             });
+        }
+        function CheckIsUnicueTg(name){
+            const dataToSend = {
+                name: name
+            };
+            fetch('https://tournametsite.onrender.com/check_tg_in_db', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' 
+                },  
+                body: JSON.stringify(dataToSend)
+            })
+            .then(response => response.json())
+            .then(data => {
+                return data["acc_alright"]
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+            return false;
         }
     </script>
 </body>
