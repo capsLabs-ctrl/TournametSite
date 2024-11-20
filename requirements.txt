@@ -3,4 +3,3 @@ numpy
 mysql
 bs4
 requests
-python==3.10.*
