@@ -100,10 +100,12 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log("Ответ сервера:" + data["acc_alright"]);
+                console.log("Ответ сервера1:" + data["acc_alright"]);
                 return data["acc_alright"];
+                console.log("Ответ сервера2:" + data["acc_alright"]);
             })
             .catch(error => {
+                console.log("Ответ сервера3:" + data["acc_alright"]);
                 console.error('Ошибка:', error);
                 return false;
             });
