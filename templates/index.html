@@ -75,8 +75,8 @@
             })
             .then(response => response.json())
             .then(data => {
-                ShowIsOk(data["acc_alright"]);
-                if(data["acc_alright"]){
+                ShowIsOk(data["acc_exist"]);
+                if(data["acc_exist"]){
                     isUnicue = CheckIsUnicueTg(name);
                     ShowIsRegistered(isUnicue);
                     if(isUnicue)
@@ -100,12 +100,12 @@
             })
             .then(response => response.json())
             .then(data => {
-                return data["acc_alright"]
+                return data["acc_alright"];
             })
             .catch(error => {
                 console.error('Ошибка:', error);
+                return false;
             });
-            return false;
         }
     </script>
 </body>

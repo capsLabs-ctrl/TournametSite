@@ -76,4 +76,4 @@ def checkNameIsUnicue(name):
         cursor.close()
         connection.close()
         return row_count==0
-print(checkNameIsUnicue("caps"))
+print(checkNameIsUnicue("BombasterNaSteroydah"))
