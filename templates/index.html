@@ -77,6 +77,7 @@
                 ShowIsOk(data["acc_exist"]);
                 if(data["acc_exist"]){
                     isUnicue = CheckIsUnicueTg(name);
+                    console.log("Ответ сервера 4:"+ isUnicue);
                     ShowIsRegistered(isUnicue);
                     if(isUnicue)
                         sendData();
@@ -102,12 +103,9 @@
             .then(data => {
                 console.log("Ответ сервера1:" + data["acc_alright"]);
                 return data["acc_alright"];
-                console.log("Ответ сервера2:" + data["acc_alright"]);
             })
             .catch(error => {
-                console.log("Ответ сервера3:" + data["acc_alright"]);
                 console.error('Ошибка:', error);
-                return false;
             });
         }
     </script>
