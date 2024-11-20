@@ -1,0 +1,6 @@
+flask
+numpy
+check
+mysql
+bs4
+requests
