@@ -21,7 +21,7 @@ def checkTelegram():
 def sendToDatabase():
     try:
         data = request.get_json()
-        if not data or "inputs" not in data:
+        if data is None:
             return jsonify({"error": "Invalid input"}), 400
         username = data["name"]
         mmr = data["mmr"]
