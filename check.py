@@ -32,19 +32,27 @@ def check_telegram_username(username):
 
 def sendData(data):
     try:
+        # Устанавливаем соединение
         connection = mysql.connector.connect(
-        host="bhihmdlzeva9nple8r0v-mysql.services.clever-cloud.com",
-        user="uluyy4kz85l4bapm",
-        password="CpGIFlfBYYkDtDltZSv8",
-        database="bhihmdlzeva9nple8r0v",
-        port=3306)
+            host="bhihmdlzeva9nple8r0v-mysql.services.clever-cloud.com",
+            user="uluyy4kz85l4bapm",
+            password="CpGIFlfBYYkDtDltZSv8",
+            database="bhihmdlzeva9nple8r0v",
+            port=3306
+        )
         cursor = connection.cursor()
+        # Запрос на вставку
         query = "INSERT INTO Учасники (Имя, Телеграм, ММР) VALUES (%s, %s, %s)"
         values = (data["name"], data["tg_name"], data["mmr"])
         cursor.execute(query, values)
+
+        # Подтверждаем изменения
         connection.commit()
+        print(f"Inserted {cursor.rowcount} row(s).")  # Выводим количество добавленных строк
+
         cursor.close()
         connection.close()
+        return True  # Успешная вставка данных
     except Error as e:
+        print(f"Error: {e}")  # Выводим описание ошибки
         return False
-    return True
