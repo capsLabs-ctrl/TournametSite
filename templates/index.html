@@ -33,9 +33,9 @@
             mmr = document.getElementsByName("mmrInput")[0].textContent;
             tgname = document.getElementsByName("tgInput")[0].textContent;
             const dataToSend = {
-                name: name,
-                mmr:mmr,
-                tgname:tgname,
+                'name': name,
+                'mmr':mmr,
+                'tgname':tgname,
             };
             fetch('https://tournametsite.onrender.com/send_data', {
                 method: 'POST',
