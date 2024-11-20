@@ -71,7 +71,7 @@
             .then(data => {
                 ShowIsOk(data["acc_exist"]);
                 if(data["acc_exist"])
-                    SendData();
+                    sendData();
             })
             .catch(error => {
                 console.error('Ошибка:', error);
