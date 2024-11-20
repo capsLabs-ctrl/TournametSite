@@ -25,7 +25,12 @@
         }
         function ShowIsOk(isExist){
             if(!isExist){
-                alert("Телеграм аккаунт не существует или закрыт")
+                alert("Телеграм аккаунт не существует или закрыт");
+            }
+        }
+        function ShowIsRegistered(isRegistered){
+            if(!isRegistered){
+                alert("Телеграм аккаунт уже зарегестрирован в турнире");
             }
         }
         function sendData(){
@@ -73,6 +78,7 @@
                 if(data["acc_exist"])
                     if(CheckIsUnicueTg(name))
                         sendData();
+
             })
             .catch(error => {
                 console.error('Ошибка:', error);

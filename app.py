@@ -18,7 +18,7 @@ def checkTelegram():
         return jsonify({"error": str(e)}), 500
     
 @app.route('/check_tg_in_db', methods=['POST'])
-def checkTelegram():
+def checkTelegramInDB():
     try:
         data = request.get_json()
         if data is None:
