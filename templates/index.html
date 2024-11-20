@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+    <form class="form">
+        <main class="main_section">
+            <section>
+                <h1>Отправьте анкету на участие в турние</h1>
+            </section>
+            <label>Имя<input name="nameInput" class="main_section_items" type="text"></label>
+            <label>Текущий ммр<input name="mmrInput" class="main_section_items" max="15000" min="0" type="number"></label>
+            <label>Телеграм аккаунт<input name="tgInput" class="main_section_items" type="text"></label>
+            <button type="submit" class="main_section_items" onclick="buttonClick(this)">Отправить</button>
+        </main>
+    </form>
+    <script>
+        function buttonClick(sender){
+            event.preventDefault();
+            CheckIsExsistTG();
+        }
+        function ShowIsOk(isExist){
+            if(!isExist){
+                alert("Телеграм аккаунт не существует или закрыт")
+            }
+        }
+        function sendData(){
+            name = document.getElementsByName("nameInput")[0].textContent;
+            mmr = document.getElementsByName("mmrInput")[0].textContent;
+            tgname = document.getElementsByName("tgInput")[0].textContent;
+            const dataToSend = {
+                name: name,
+                mmr:mmr,
+                tgname:tgname,
+            };
+            fetch('https://flask-app-qw64.onrender.com/send_data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' 
+                },  
+                body: JSON.stringify(dataToSend)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(!data["executed"])
+                    alert("Ошибка при добавлении в базу данных");
+                else
+                    alert("Учасник добавлен");
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+        }
+        function CheckIsExsistTG(){
+            name = document.getElementsByName("nameInput")[0].textContent;
+            const dataToSend = {
+                name: name
+            };
+            fetch('https://flask-app-qw64.onrender.com/check_tg', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json' 
+                },  
+                body: JSON.stringify(dataToSend)
+            })
+            .then(response => response.json())
+            .then(data => {
+                ShowIsOk(data["acc_exist"]);
+                if(data["acc_exist"])
+                    SendData();
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+            });
+        }
+    </script>
+</body>
+</html>
