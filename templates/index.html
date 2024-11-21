@@ -31,8 +31,16 @@
     <script>
         function buttonClick(sender){
             event.preventDefault();
-            StartAnimation();
-            CheckIsExsistTG();
+            if(checkFill()){
+                StartAnimation();
+                CheckIsExsistTG();
+            }
+        }
+        function checkFill(){
+            const name = document.getElementsByName("nameInput")[0].value;
+            const mmr = document.getElementsByName("mmrInput")[0].value;
+            const tgname = document.getElementsByName("tgInput")[0].value;
+            return name!="" && tgname!="" && mmr>0 && mmr<16000;
         }
         function StopAnimation(isOk){
             icon = document.getElementById("icon");
