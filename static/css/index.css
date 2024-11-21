@@ -2,6 +2,17 @@ body, form{
     height: 100vh;
     width: 100vw;
 }
+@keyframes spinAnim{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+.rotate{
+    animation: spinAnim .5s linear infinite;
+}
 form{
     display: flex;
     justify-content: center;
@@ -12,9 +23,7 @@ label{
     justify-content: space-between;
 }
 input{
-    min-width: 90px;
     width: 100px;
-    max-width: 120px;
 }
 label{
     margin-bottom: 20px;
@@ -24,4 +33,12 @@ label{
     display: flex;
     flex-direction: column;
     width: 200px;
+}
+#animunit{
+    display: flex;
+    align-self: center;
+    margin-top: 20px;
+}
+#icon{
+    font-size: 70pt;
 }
