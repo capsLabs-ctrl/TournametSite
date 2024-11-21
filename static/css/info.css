@@ -105,6 +105,10 @@ nav li{
         transform: rotate(360deg);
     }
 }
+#animunit{
+    display: flex;
+    justify-content: center;
+}
 
 .rotate{
     animation: spinAnim .5s linear infinite;
