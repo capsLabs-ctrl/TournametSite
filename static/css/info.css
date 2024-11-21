@@ -106,6 +106,10 @@ nav li{
     }
 }
 
+.rotate{
+    animation: spinAnim .5s linear infinite;
+}
+
 form{
     width: var(--registrationsize);
     margin-left: var(--registrationmarginL);
