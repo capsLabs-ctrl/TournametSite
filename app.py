@@ -41,7 +41,7 @@ def getFromDatabaseNames():
         return jsonify({"error": str(e)}), 500
     
 @app.route('/add_match', methods=['POST'])
-def sendToDatabase():
+def sendNewMatchToDB():
     try:
         data = request.get_json()
         if data is None:
