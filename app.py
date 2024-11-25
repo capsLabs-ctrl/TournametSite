@@ -67,7 +67,7 @@ def home():
     return render_template('index.html')
 
 @app.route('/grids')
-def home():
+def grids():
     return render_template('gridpage.html')
     
     
