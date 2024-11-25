@@ -150,13 +150,86 @@ def getPlayersNames():
         # Запрос на вставку
         query = F"SELECT Имя FROM Учасники"
         cursor.execute(query)
-# Получение всех строк
+    # Получение всех строк
         players = cursor.fetchall()
-# Количество строк, которые вернул запрос
+    # Количество строк, которые вернул запрос
         cursor.close()
         connection.close()
         player_names = [player[0].rstrip() for player in players]
         return player_names
 
+def getGroups():
+    players_by_groups = []
+    players_count_in_groups = [0,0,0,0]
+    player_names = getPlayersNames()
+    players_count = len(player_names)
+    winners_points = getWinners()
+    i=0
+    while i<(players_count)%4:
+        players_count_in_groups[i] += 1
+        i += 1
+    j = 0
+    while j<len(players_count_in_groups):
+        players_count_in_groups[j] += (players_count-i)//4
+        j+=1
+    i = 0
+    k = 0
+    while i<len(players_count_in_groups):
+        j = 0
+        players_by_groups.append([])
+        while j<players_count_in_groups[i]:
+            players_by_groups[i].append(player_names[k])
+            j+=1
+            k+=1
+        i+=1
+    players_scores = []
+    i=0
+    while i<len(players_by_groups):
+        j = 0
+        players_scores.append([])
+        while j<len(players_by_groups[i]):
+            if players_by_groups[i][j] in winners_points:
+                players_scores[i].append(winners_points[players_by_groups[i][j]])
+            else:
+                players_scores[i].append(0)
+            j+=1
+        i+=1
+    while i<len(players_by_groups):
+        j = 0
+        while j<len(players_by_groups[i]):
+
+            j+=1
+        i+=1
+    sorted_players_by_groups = []
+    sorted_players_scores = []
+
+    for group, scores in zip(players_by_groups, players_scores):
+        sorted_group_with_scores = sorted(zip(group, scores), key=lambda x: x[1], reverse=True)
+        sorted_group, sorted_scores = zip(*sorted_group_with_scores)
+        sorted_players_by_groups.append(list(sorted_group))
+        sorted_players_scores.append(list(sorted_scores))
+    return sorted_players_by_groups, sorted_players_scores
+
+def getWinners():
+    # Устанавливаем соединение
+    connection = mysql.connector.connect(
+        host="bhihmdlzeva9nple8r0v-mysql.services.clever-cloud.com",
+        user="uluyy4kz85l4bapm",
+        password="CpGIFlfBYYkDtDltZSv8",
+        database="bhihmdlzeva9nple8r0v",
+        port=3306
+    )
+    cursor = connection.cursor()
+    # Запрос на вставку
+    query = f"SELECT Учасники.Имя, COUNT(*) AS Очки FROM Матчи JOIN Учасники ON Матчи.Победитель = Учасники.Код WHERE Матчи.Групповой_матч = 1 GROUP BY Учасники.Имя ORDER BY Очки DESC;"
+    cursor.execute(query)
+    players = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    player_points = {player[0].strip(): player[1] for player in players}
+    return player_points
+
+players, scores = getGroups()
+print(players,scores)
 # sendData({'steam':"1231231231", 'name':"Никита", 'tgname':"capsl"})
 # sendMatchData({"player1":"Никита", "player2":"Залупенск", "winner":"Никита", "matchID":"1231231231", "date":"2024-01-01", 'group':True})

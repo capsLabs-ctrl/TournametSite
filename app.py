@@ -61,6 +61,16 @@ def sendToDatabase():
         return jsonify({"executed":isOk}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+@app.route('/players_division', methods=['POST'])
+def playersDivision():
+    try:
+        data = request.get_json()
+        if data is None:
+            return jsonify({"error": "Invalid input"}), 400
+        players_by_groups,players_scores = check.getGroups()
+        return jsonify({"players_by_groups":players_by_groups, "players_scores":players_scores}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
     
 @app.route('/')
 def home():
