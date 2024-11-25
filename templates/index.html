@@ -241,7 +241,7 @@
             let player2 = document.querySelector("#player2Name").value;
             let winner = document.querySelector("#winner").value;
             let group = document.querySelector("#group").value;
-            if(mathId != "" && players.includes(player1) && players.includes(player2) && players.includes(winner)){
+            if(matchId != "" && players.includes(player1) && players.includes(player2) && players.includes(winner)){
                 try {
                     const dataToSend = {
                         'player1': player1,
@@ -270,7 +270,7 @@
                     console.error('Ошибка:', error);
                 }
             }
-        else alert("Выбери игрока из списка");
+            else alert("Выбери игрока из списка");
         }
         function fillDataList(players){
             let datalist = document.querySelector("#players");
