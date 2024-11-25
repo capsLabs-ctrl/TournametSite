@@ -183,7 +183,9 @@
     <script>
         let prr = false;
         let players = getPlayersFromBD();
+        console.log(players);
         function buttonCheckClick(){
+            console.log(players);
             if(prr !== true)
             hashString(document.querySelector("#password").value).then(hash => {prr = hash === "de34d10f09c2800918c27c04b3936ab25ce958de6021b846226e8c78f43207f4"? true:false;
                 if(prr === true){

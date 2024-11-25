@@ -124,3 +124,4 @@ def getPlayersNames():
         cursor.close()
         connection.close()
         return players
+print(getPlayersNames())
