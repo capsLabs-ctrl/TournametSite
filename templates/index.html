@@ -240,7 +240,7 @@
             let player1 = document.querySelector("#player1Name").value;
             let player2 = document.querySelector("#player2Name").value;
             let winner = document.querySelector("#winner").value;
-            let group = document.querySelector("#group").value;
+            let group = document.querySelector("#group").checked;
             if(matchId != "" && players.includes(player1) && players.includes(player2) && players.includes(winner)){
                 try {
                     const dataToSend = {

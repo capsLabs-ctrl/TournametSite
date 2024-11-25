@@ -159,5 +159,4 @@ def getPlayersNames():
         return player_names
 
 # sendData({'steam':"1231231231", 'name':"Никита", 'tgname':"capsl"})
-for i in range(10):
-    sendMatchData({"player1":"Никита", "player2":"Залупенск", "winner":"Никита", "matchID":"1231231231", "date":"2024-01-01", 'group':True})
+# sendMatchData({"player1":"Никита", "player2":"Залупенск", "winner":"Никита", "matchID":"1231231231", "date":"2024-01-01", 'group':True})
