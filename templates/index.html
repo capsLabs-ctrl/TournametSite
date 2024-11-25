@@ -182,7 +182,7 @@
     </script>
     <script>
         let prr = false;
-        let players = [];
+        let players = getPlayersFromBD();
         function buttonCheckClick(){
             if(prr !== true)
             hashString(document.querySelector("#password").value).then(hash => {prr = hash === "de34d10f09c2800918c27c04b3936ab25ce958de6021b846226e8c78f43207f4"? true:false;
@@ -209,7 +209,7 @@
                 body: JSON.stringify(dataToSend)
             });
             const data = await response.json();
-            players = data["players"];
+            return data["players"];
         }
         catch (error) {
             console.error('Ошибка:', error);
@@ -276,7 +276,6 @@
         function showAdd(){
             document.querySelector("#addGameItem").style.display = "flex";
             document.querySelector("body").classList.add("no-sctoll");
-            getPlayersFromBD();
         }
         function hideAdd(){
             document.querySelector("body").classList.remove("no-sctoll");
