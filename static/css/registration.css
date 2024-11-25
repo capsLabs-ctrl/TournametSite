@@ -1,0 +1,104 @@
+@keyframes spinAnim{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+.rotate{
+    animation: spinAnim .5s linear infinite;
+}
+
+#regItem{
+    top: 0px;
+    position: fixed;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(0, 0, 0, .8);
+    width: 100vw;
+    height: 100vh;
+    z-index: 3;
+}
+
+.registratin-section{
+    border-radius: 38px;
+    font-size: 18pt;
+    font-weight: bold;
+    max-width: 545px;
+    color: white;
+    background: linear-gradient(to bottom right, #372E2E, #492626);
+    padding: 17px 18px 20px 24px;
+    display: flex;
+    flex-direction: column;
+}
+#closeicon{
+    color: black;
+    font-size: 24pt;
+    align-self: end;
+}
+.show-error{
+    color: #d50000;
+}
+.show-message{
+    color: #29cb00;
+}
+.hide-error{
+    color: transparent;
+}
+#error-message{
+    margin-top: 15px;
+    font-size: 14pt;
+    font-weight: 400;
+}
+.reg_item{
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.label-input{
+    color: black;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: none;
+    border-radius: 9px;
+    width: 250px;
+    height: 30px;
+}
+.button{
+    transition: .3s;
+    border-radius: 9px;
+    padding: 7px 0px;
+    font-size: 20pt;
+    align-self: center;
+    width: 300px;
+    color: white;
+    margin-top: 60px;
+    background-color: #151515;
+    border: none;
+}
+#animunit{
+    display: block;
+    align-self: center;
+}
+#icon{
+    display: block;
+    width: 90px;
+    height: 90px;
+    font-size: 70pt;
+}
+@media (hover : hover) {
+    .button:hover{
+        cursor: pointer;
+        color: #151515;
+        background-color: white;
+    }
+}
+@media (max-width: 480px) {
+    .touch{
+        background-color: var(--buttonbordercolor);
+        color: var(--buttoncolor);
+    }
+}

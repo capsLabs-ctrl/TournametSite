@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 import numpy as np
-from check import check_telegram_username, sendData, checkNameIsUnicue
+import check
 import os
 
 app = Flask(__name__)
@@ -12,7 +12,7 @@ def checkTelegram():
         if data is None:
             return jsonify({"error": "Invalid input"}), 400
         username = data["name"]
-        result = check_telegram_username(username)
+        result = check.check_telegram_username(username)
         return jsonify({"acc_exist":result}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -24,24 +24,49 @@ def checkTelegramInDB():
         if data is None:
             return jsonify({"error": "Invalid input"}), 400
         username = data["name"]
-        result = checkNameIsUnicue(username)
+        result = check.checkNameIsUnicue(username)
         return jsonify({"acc_alright":result}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route('/get_players', methods=['POST'])
+def getFromDatabaseNames():
+    try:
+        data = request.get_json()
+        if data is None:
+            return jsonify({"error": "Invalid input"}), 400
+        names = check.getPlayersNames()
+        return jsonify({"players":names}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route('/add_match', methods=['POST'])
+def sendToDatabase():
+    try:
+        data = request.get_json()
+        if data is None:
+            return jsonify({"error": "Invalid input"}), 400
+        username = data["name"]
+        mmr = data["mmr"]
+        tg = data["tgname"]
+        isOk = check.sendData({"name":username, "tg_name":tg, "mmr":mmr})
+        return jsonify({"executed":isOk}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
 @app.route('/send_data', methods=['POST'])
 def sendToDatabase():
-    # try:
-    data = request.get_json()
-    if data is None:
-        return jsonify({"error": "Invalid input"}), 400
-    username = data["name"]
-    mmr = data["mmr"]
-    tg = data["tgname"]
-    isOk = sendData({"name":username, "tg_name":tg, "mmr":mmr})
-    return jsonify({"executed":isOk}), 200
-    # except Exception as e:
-    #     return jsonify({"error": str(e)}), 500
+    try:
+        data = request.get_json()
+        if data is None:
+            return jsonify({"error": "Invalid input"}), 400
+        username = data["name"]
+        mmr = data["mmr"]
+        tg = data["tgname"]
+        isOk = check.sendData({"name":username, "tg_name":tg, "mmr":mmr})
+        return jsonify({"executed":isOk}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
     
 @app.route('/')
 def home():

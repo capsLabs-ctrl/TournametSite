@@ -2,33 +2,47 @@
     margin: 0px;
     padding: 0px;
 }
+html{
+    scroll-behavior: smooth;
+}
 :root{
-    --marginL: 10px;
+    --countdiscval:2;
+    --countlover:2;
+    --hightRezultColor: #83ff5a;
+    --normalRezultColor: #ffff5c;
+    --badRezultColor: #ff6161;
+    --margintopregistration: 200px;
+    --inputwidth: 150px;
+    --marginL: 20px;
     --sectionmarginL: 30px;
     --navbuttonsmargin: 50px;
     --navbuttonsverticalpadding: 5px;
-    --navbuttonshorizontalpadding: 50px;
+    --navbuttonshorizontalpadding: 20px;
     --registrationsize: 300px;
     --registrationmarginL: 20px;
-    --sectionwidth:calc(100% - var(--registrationsize) - var(--registrationmarginL));
+    --fullbgcolor: rgba(255, 255, 255, 0.882);
     --buttoncolor: #fdfdfd;
     --buttonbordercolor: #2710f7;
+    --buttonwidth:300px;
 }
-section{
+.hidden{
+    display: none;
+}
+.infoSection{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 @media (max-width: 480px) {
     :root{
+        --margintopregistration: 150px;
         --marginL: 15px;
         --sectionmarginL: 5px;
         --navbuttonsmargin: 10px;
         --navbuttonsverticalpadding: 5px;
-        --navbuttonshorizontalpadding: 30px;
-        --sectionwidth:100%;
+        --navbuttonshorizontalpadding: 10px;
         --registrationsize: 100%;
     }
-    section{
+    .infoSection{
         flex-direction: column;
     }
   }
@@ -37,6 +51,9 @@ body{
 }
 .infoSection{
     margin-top: 30px;
+}
+.gridSection{
+    width: 100%;
 }
 header{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -47,7 +64,7 @@ header{
     width: 100%;
 }
 
-section{
+.infoSection{
     text-align: justify;
     margin-left: var(--sectionmarginL);
     margin-right: var(--sectionmarginL);
@@ -55,8 +72,9 @@ section{
     width: calc(100% - var(--sectionmarginL) - 2px - var(--sectionmarginL));
 }
 
-section div{
-    width: var(--sectionwidth);
+.infoSection div{
+    width: 100%;
+    margin-bottom: 30px;
 }
 nav{
     background-color: rgb(234, 234, 234);
@@ -80,7 +98,8 @@ hr{
     margin-top: 10px;
 }
 h2{
-    margin-top: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 nav ul{
     margin-top: 10px;
@@ -92,9 +111,47 @@ nav ul{
 nav li{
     border-radius: 10px;
     background-color: rgb(175, 175, 175);
-    margin: 0px var(--navbuttonsmargin) 0px var(--navbuttonsmargin);
+    margin: 0px 10px 0px var(--navbuttonsmargin);
     padding: var(--navbuttonsverticalpadding) var(--navbuttonshorizontalpadding);
 }
+nav li:hover{
+    cursor: pointer;
+}
+@media (max-width:480px) {
+    nav li{
+        font-size: 13px;
+    }
+}
+ul li:has(img){
+    display: flex;
+    align-items: center;
+}
+nav p{
+    color: black;
+}
+
+code {
+    font-family: "Courier New", Courier, monospace; /* Моноширинный шрифт */
+    background-color: #e0e0e0; /* Светло-серый фон */
+    padding: 2px 4px; /* Отступы вокруг текста */
+    border-radius: 4px; /* Закругленные углы */
+  }
+
+  strong code {
+    font-weight: bold; /* Жирный текст */
+    color: #333; /* Темный цвет текста */
+  }
+
+  .icon{
+    margin-right: 10px;
+    width: 25px;
+    height: 20px;
+  }
+  a{
+    text-decoration: none;
+}
+
+
 
 
 @keyframes spinAnim{
@@ -105,27 +162,46 @@ nav li{
         transform: rotate(360deg);
     }
 }
+#closeicon{
+    margin-top: 10px;
+    margin-right: 10px;
+    display: block;
+    width: 20px;
+    align-self: end;
+}
+#closeicon:hover{
+    cursor: pointer;
+}
 #animunit{
     display: flex;
     justify-content: center;
+}
+
+label.reg_item{
+    align-items: center;
 }
 
 .rotate{
     animation: spinAnim .5s linear infinite;
 }
 
-form{
-    width: var(--registrationsize);
-    margin-left: var(--registrationmarginL);
-}
-@media (max-width: 480px) {
-    form{
-        width: var(--registrationsize);
-        margin-left: 0px;
-    }
+
+.form{
+    position: fixed;
+    background-color: var(--fullbgcolor);
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
 }
 .registarion_section{
-    padding: 20px 20px 40px 20px;
+    background-color: white;
+    width: var(--registrationsize);
+    height: 400px;
+    margin-top: var(--margintopregistration);
+    padding: 0px 20px 00px 20px;
     display: flex;
     flex-direction: column;
 }
@@ -150,13 +226,15 @@ h1{
 }
 input{
     align-self: center;
-    height:  20px;
-    width: 150px;
+    height:  30px;
+    width: var(--inputwidth);
 }
 .reg_item{
     margin-top: 10px;
 }
 .button{
+    align-self: center;
+    width: var(--buttonwidth);
     transition: background-color .3s ease, color .3s ease;
     color: var(--buttonbordercolor);
     font-weight: 600;
@@ -182,5 +260,63 @@ input{
         cursor: pointer;
         background-color: var(--buttonbordercolor);
         color: var(--buttoncolor);
+    }
+}
+
+
+
+#gridMembersSection{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.tableContainer{
+    width: 40%;
+    overflow-x: auto; /* Включает горизонтальную прокрутку */
+    -webkit-overflow-scrolling: touch;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 20px;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    border: 1px solid #ddd; /* Границы ячеек */
+    padding: 8px; /* Внутренние отступы */
+    text-align: left; /* Выравнивание текста влево */
+  }
+  th {
+    background-color: #f4f4f4; /* Светлый фон для заголовков */
+    font-weight: bold;
+  }
+  .hightRezult{
+    background-color: var(--hightRezultColor);
+  }
+  .normalRezult{
+    background-color: var(--normalRezultColor); /* Светло-оранжевый фон */
+  }
+  .badRezult{
+    background-color: var(--badRezultColor); /* Зебра-эффект для строк */
+  }
+  .gamesTable{
+    width: 100%;
+  }
+  .gamesTable table{
+    border-collapse: collapse;
+  }
+  .stageTable{
+    width: calc(100% - 10%);
+  }
+  .tdCenter{
+    text-align: center;
+  }
+  @media (max-width: 480px) {
+    .tableContainer{
+        width:calc(100% - 10%); 
     }
 }

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/gridpage.css">
+    <link rel="stylesheet" href="../static/css/registration.css">
+    <title>Таблицы игроков</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg" href="../static/images/iconYellow.svg">
+</head>
+<body>
+    <header class="section header">
+        <p class="nav-link"><a class="no-style-a" href="../templates/index.html">На главную</a></p>
+        <p class="nav-link registrarion-link hover-cursor-pointer" onclick="showRegistration()">Регистрация</p>
+    </header>
+    <main>
+        <section class="section grid-section rtl-gradient">
+            <h3 class="align-self-center pt20" style="margin-top: 40px;">Сетка</h3>
+            <h3 style="margin-top: 40px; margin-left: 5%;">Обозначения</h3>
+            <ul class="no-style-ul color-block-container" style="margin-top: 40px; margin-left: 5%;">
+                <li class="list-item"><div class="color-block color-good"></div><p class="list-element"><b>Верхняя сетка</b></p></li>
+                <li class="list-item"><div class="color-block color-normal"></div><p class="list-element"><b>Нижняя сетка</b></p></li>
+                <li class="list-item"><div class="color-block color-bad"></div><p class="list-element"><b>Выбывает</b></p></li>
+            </ul>
+            <h4 class="" style="margin-top: 40px; margin-bottom: 40px; margin-left: 5%;">Список игроков</h4>
+            <section id="playersGridSection" style="margin-bottom: 40px;">
+            </section>
+        </section>
+        <div class="line"></div>
+        <section class="section grid-section lrt-gradient">
+            <h4 class="" style="margin-top: 40px; margin-bottom: 40px; margin-left: 5%;" >Расписание груповых матчей</h4>
+            <section id="groupGamesGridSection" style="margin-bottom: 40px;">
+            </section>
+        </section>
+    </main>
+    <footer>
+        <p>По вопросам обращаться <a class="no-style-a a-text-color" href="https://t.me/capsLabss">сюда</a></p>
+    </footer>
+    <section id="regItem">
+        <section class="registratin-section">
+            <p class="material-symbols-outlined hover-cursor-pointer" id="closeicon" onclick="hideRegistration()">close</p>
+                <section>
+                    <h1 style="margin-top: 30px; padding: 0px 80px; font-size: 20pt; text-align: center;">Отправьте заявку на участие в турние</h1>
+                </section>
+                <label class="reg_item" style="margin-top: 60px;">Имя<input class="label-input" name="nameInput" class="main_section_items" type="text" required></label>
+                <label class="reg_item">Телеграм аккаунт<input class="label-input" name="tgInput" class="main_section_items" type="text" required></label>
+                <label class="reg_item">Цифры стим аккаунта<input class="label-input" name="steamInput" class="main_section_items" type="text" required></label>
+                <p id="error-message" class="hide-error">1</p>
+                <button type="button" class="main_section_items button" onclick="buttonClick()">Отправить</button>
+                <section id="animunit">
+                    <span class="material-symbols-outlined reg_item" style="margin-top: 25px;" id="icon">
+                        <!-- autorenew -->
+                        <!-- check -->
+                        <!-- close -->
+                        </span>
+                </section>
+        </section>
+    </section>
+
+    <script src="../static/js/registration.js"></script>
+    <script>
+        
+        const counts = {
+            normalCount: 2,
+            badCount:2,
+        };
+        document.addEventListener("DOMContentLoaded", function() {
+            const members =["Никита", "Саня", "Ваня","Даня","Кристина"]; 
+            const membersandscores = {
+                members: members,
+                scores: [10,8,6,4,2],
+            }
+            const memberanddates = {
+                members:members,
+                dates:[
+                    ["-", "01.01.2025", "01.01.2025","01.01.2025","01.01.2025"],
+                    ["01.01.2025", "-", "01.01.2025","01.01.2025","01.01.2025"],
+                    ["01.01.2025", "01.01.2025", "-","01.01.2025","01.01.2025"],
+                    ["01.01.2025", "01.01.2025", "01.01.2025","-","01.01.2025"],
+                    ["01.01.2025", "01.01.2025", "01.01.2025","01.01.2025","-"],
+                ],
+            }
+            const groupNames = ["Группа А", "Группа Б", "Группа В", "Группа Г"];
+            groupNames.forEach((name) =>{
+                createGroupMembersTable(membersandscores, name);
+                createGroupStageGamesTable(memberanddates, name)
+            })
+            paintDataGrid(counts);
+        })
+        function paintDataGrid(counts) {
+            const tables = document.querySelectorAll("table.playersTable");
+            const badCount = counts["badCount"];   
+            const normalCount = counts["normalCount"];
+            tables.forEach((table) => {
+                const rows = Array.from(table.querySelectorAll("tr")); 
+                rows.forEach((row, index) => {
+                    const position = rows.length - index;
+                    if (position <= badCount) {
+                        row.classList.add("badRezult");
+                    } else if (position <= normalCount + badCount) {
+                        row.classList.add("normalRezult");
+                    } else if(position!=rows.length) {
+                        row.classList.add("hightRezult");
+                    }
+                });
+            });
+        }   
+        function createGroupMembersTable(membersandscores, groupName){
+            let container = document.createElement("div");
+            container.classList.add("tableContainer");
+            let name = document.createElement("p");
+            name.innerText = groupName;
+            name.style["margin-bottom"] = "10px";
+            let members = membersandscores["members"];
+            let scores = membersandscores["scores"];
+            let parent = document.querySelector("#playersGridSection");
+            let table = document.createElement("table");
+            let header = document.createElement("tr");
+            let header1 = document.createElement("th");
+            header1.innerText = "Учасник";
+            let header2 = document.createElement("th");
+            header2.classList.add("tdCenter");
+            header2.innerText = "Очки";
+            header.appendChild(header1);
+            header.appendChild(header2);
+            table.appendChild(header);
+            for(let i = 0;i<members.length;i++){
+                let tr = document.createElement("tr");
+                let td1 = document.createElement("td");
+                let td2 = document.createElement("td");
+                td1.innerText = members[i];
+                td2.innerText = scores[i];
+                td2.classList.add("tdCenter");
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                table.appendChild(tr);
+            }
+            table.classList.add("playersTable");
+            container.appendChild(name);
+            container.appendChild(table);
+            parent.appendChild(container);
+        }
+        function createGroupStageGamesTable(memberanddates, groupName){
+            let parent = document.querySelector("#groupGamesGridSection");
+            let container = document.createElement("div");
+            let table = document.createElement("table");
+            let name = document.createElement("p");
+            name.innerText = groupName;
+            name.style["margin-bottom"] = "10px";
+            const members = memberanddates["members"];
+            const dates = memberanddates["dates"];
+            {
+                let tr = document.createElement('tr');
+                let th = document.createElement("th");
+                th.innerText = "";
+                tr.appendChild(th);
+                for(let j = 0; j<members.length;j++){
+                    let th = document.createElement("th");
+                    th.innerText = members[j];
+                    tr.appendChild(th);
+                }
+                table.appendChild(tr);
+            }
+            for(let i = 0;i<members.length;i++){
+                let tr = document.createElement("tr");
+                let th = document.createElement("th");
+                th.innerText = members[i];
+                tr.appendChild(th);
+                for(let j = 0; j<dates[i].length;j++){
+                    let td = document.createElement("td");
+                    td.innerText = dates[i][j];
+                    td.classList.add("tdCenter");
+                    tr.appendChild(td);
+                }
+                table.appendChild(tr);
+            }
+            container.classList.add("tableContainer", "stageTable");
+            table.classList.add("gamesTable");
+            container.appendChild(name);
+            container.appendChild(table);
+            parent.appendChild(container);
+        }
+    </script>
+</body>
+</html>

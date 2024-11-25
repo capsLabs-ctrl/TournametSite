@@ -14,12 +14,14 @@
     </header>
     <nav>
         <ul>
-            <li id="tournamentInfo"><p>О турнире</p></li>
-            <li id="tournamentRules"><p>Правила</p></li>
+            <li id="tournamentRegistration" onclick="showRegistration()"><p>Регистрация</p></li>
+            <li id="tournamentInfo"><a href="#about"><p>О турнире</p></a></li>
+            <li id="tournamentRules"><a href="#rules"><p>Правила</p></a></li>
+            <li id="tournamentGrid"><a href="#gridGroupGamesSection"><p>Сетка</p></a></li>
         </ul>
     </nav>
     <section class="infoSection">
-        <div>
+        <div id="about" class="">
             <h2>Турнир по Dota 2 "993-7?"</h2>
             <p>Готовьтесь к невероятным битвам один на один! Турнир "993-7?" приглашает всех любителей Dota 2 проявить свои навыки и сразиться за звание лучшего соло-игрока.              
             </p>
@@ -54,29 +56,243 @@
                 <hr>
             </ul>
             <p><h3>Как принять участие:</h3><br>
-                Заявки на участие принимаются до <b>[указать дату окончания регистрации]</b>. Для регистрации свяжитесь с организаторами или заполните форму по ссылке: <b>[указать ссылку на регистрацию, если она есть]</b>.
+                Заявки на участие принимаются до <b>[указать дату окончания регистрации]</b>. Для регистрации свяжитесь с организаторами или заполните форму по <a href="#registration">ссылке</a>.
                 Не упустите шанс продемонстрировать своё мастерство и доказать, что вы достойны победить в <b>"993-7?"</b>! Стань легендой соло-режима!</p>
         </div>
-        <form class="form">
-            <main class="registarion_section">
-                <section class="reg_item">
-                    <h1>Отправьте заявку на участие в турние</h1>
-                </section>
-                <label class="reg_item">Имя<input name="nameInput" class="main_section_items" type="text" required></label>
-                <label class="reg_item">Текущий ммр<input name="mmrInput" class="main_section_items" max="15000" min="0" type="number" required></label>
-                <label class="reg_item">Телеграм аккаунт<input name="tgInput" class="main_section_items" type="text" required></label>
-                <button type="button" class="main_section_items reg_item button" onclick="buttonClick()">Отправить</button>
-                <section id="animunit">
-                    <span class="material-symbols-outlined reg_item" id="icon">
-                        <!-- autorenew -->
-                        <!-- check -->
-                        <!-- close -->
-                        </span>
-                </section>
-            </main>
-        </form>
+        <div id="rules" class="">
+            <h2>Правила турнира "993-7?"</h2>
+            <h2>Основные правила матча:</h2>
+            <ol>
+                <li><h3><p>Формат игры</p></h3>
+                    <ul style="list-style-type: disc;">
+                        <li>Каждый матч проводится в режиме 1 на 1.</li>
+                        <li>Победа засчитывается при выполнении одного из условий:
+                            <ul style="list-style-type: disc;">
+                                <li><b>Первый игрок делает два убийства.</b></li>
+                                <li><b>Один из игроков уничтожает T1 вышку противника.</b></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><h3><p>Запрещённые предметы:</p></h3>
+                    <ul style="list-style-type: disc;">
+                        <li><img class="icon" src="../static/images/grenage.png" alt="изображение Blood Grenade"> Blood Grenade</li>
+                        <li><img class="icon" src="../static/images/raindrop.png" alt="изображение Infused Raindrop"> Infused Raindrop</li>
+                    </ul>
+                </li>
+                <li><h3><p>Баны героев:</p></h3>
+                    <ul style="list-style-type: disc;">
+                        <li><p>Каждый игрок может забанить двух героев перед началом матча.</p></li>
+                        <li><p>Процедура банов проходит перед началом игры, в чате лобби.</p></li>
+                    </ul>
+                </li>
+            </ol>
+            <hr>
+            <h2><p>Порядок проведения матчей:</p></h2>
+            <ol>
+                <li><h3><p>Лобби:</p></h3>
+                    <ul style="list-style-type: disc;">
+                        <li><p>Лобби создаётся с включёнными читами для ускорения начала игры.</p></li>
+                        <li><p>После загрузки оба игрока пишут <strong><code class="command">-teleport</code></strong> и перемещаются в центр карты.</p></li>
+                        <li><p>Начало игры ускоряется командой <strong><code class="command">-startgame</code></strong>, вводимой организатором или игроками после подтверждения готовности обоих игроков.</p></li>
+                    </ul>
+                </li>
+                <li><h3><p>Руны:</p></h3>
+                    <ul style="list-style-type: disc;">
+                        <li>Подбор <b>любых рун</b> (богатства, иллюзий, DD, регенерации и т.д.) <b>запрещён</b></li>
+                    </ul>
+                </li>
+                <li><h3><p>Лес:</p></h3>
+                    <ul style="list-style-type: disc;">
+                        <li><p>Фарм нейтральных крипов, а так же отводы <b>запрещены</b>.</p></li>
+                    </ul>
+                </li>
+                <li><h3><p>Честность игры:</p></h3>
+                    <ul style="list-style-type: disc;">
+                        <li>Оба игрока обязаны подтвердить готовность и соблюдать правила.</li>
+                        <li>Все действия, нарушающие честную игру, будут наказываться вплоть до дисквалификации.</li>
+                    </ul>
+                </li>
+            </ol>
+            <h2><p>Дополнительные условия:</p></h2>
+            <ol>
+                <li><h3><p>Паузы:</p></h3>
+                    <ul style="list-style-type: disc;">
+                        <li>Если у игрока возникают технические проблемы, он может поставить паузу. Максимальное время паузы — <b>5 минут</b>, по согласованию с судьёй.</li>
+                    </ul>
+                </li>
+                <li><h3><p>Задержка:</p></h3>
+                    <ul style="list-style-type: disc;">
+                        <li>Игроки обязаны действовать активно. Умышленное затягивание игры карается судьями.</li>
+                    </ul>
+                </li>
+            </ol>
+            <h2><p>Дисквалификация:</p></h2>
+            <p>Игрок может быть дисквалифицирован за:</p>
+            <ul style="list-style-type: disc;">
+                <li>Нарушение указанных правил (например, использование запрещённых предметов или подбор рун).</li>
+                <li>Использование сторонних программ или игровых багов.</li>
+            </ul>
+            <h2><p>Решение спорных ситуаций:</p></h2>
+            <p>В случае спорных моментов решение принимает судейская команда. Их решение является окончательным и не подлежит обжалованию.</p>
+        </div>
     </section>
+    <section id="gridMembersSection" class="gridSection">
+        
+    </section>
+    <section id="gridGroupGamesSection" class="gridSection">
+    </section>
+    
+    <form class="form" id="registration" style="display: none;">
+        <main class="registarion_section">
+            <p class="material-symbols-outlined" id="closeicon" onclick="hideRegistration()">close</p>
+            <section class="reg_item">
+                <h1>Отправьте заявку на участие в турние</h1>
+            </section>
+            <label class="reg_item">Имя<input name="nameInput" class="main_section_items" type="text" required></label>
+            <label class="reg_item">Текущий ммр<input name="mmrInput" class="main_section_items" max="15000" min="0" type="number" required></label>
+            <label class="reg_item">Телеграм аккаунт<input name="tgInput" class="main_section_items" type="text" required></label>
+            <button type="button" class="main_section_items reg_item button" onclick="buttonClick()">Отправить</button>
+            <section id="animunit">
+                <span class="material-symbols-outlined reg_item" id="icon">
+                    <!-- autorenew -->
+                    <!-- check -->
+                    <!-- close -->
+                    </span>
+            </section>
+        </main>
+    </form>
     <script>
+        const counts = {
+            normalCount: 2,
+            badCount:2,
+        };
+        document.addEventListener("DOMContentLoaded", function() {
+            const members =["Никита", "Саня", "Ваня","Даня","Кристина"]; 
+            const membersandscores = {
+                members: members,
+                scores: [10,8,6,4,2],
+            }
+            const memberanddates = {
+                members:members,
+                dates:[
+                    ["-", "01.01.2025", "01.01.2025","01.01.2025","01.01.2025"],
+                    ["01.01.2025", "-", "01.01.2025","01.01.2025","01.01.2025"],
+                    ["01.01.2025", "01.01.2025", "-","01.01.2025","01.01.2025"],
+                    ["01.01.2025", "01.01.2025", "01.01.2025","-","01.01.2025"],
+                    ["01.01.2025", "01.01.2025", "01.01.2025","01.01.2025","-"],
+                ],
+            }
+            const groupNames = ["Группа А", "Группа Б", "Группа В", "Группа Г"];
+            groupNames.forEach((name) =>{
+                createGroupMembersTable(membersandscores, name);
+                createGroupStageGamesTable(memberanddates, name)
+            })
+            paintDataGrid(counts);
+        })
+
+        function hideRegistration(){
+            document.querySelector(".form").style.display = "none";
+            document.getElementsByName("nameInput")[0].value = "";
+            document.getElementsByName("mmrInput")[0].value = "";
+            document.getElementsByName("tgInput")[0].value = "";
+            document.querySelector("#icon").classList.remove("rotate");
+            document.querySelector("#icon").innerText = "";
+        }
+        function paintDataGrid(counts) {
+            const tables = document.querySelectorAll("table.playersTable");
+            const badCount = counts["badCount"];   
+            const normalCount = counts["normalCount"];
+            tables.forEach((table) => {
+                const rows = Array.from(table.querySelectorAll("tr")); 
+                rows.forEach((row, index) => {
+                    const position = rows.length - index;
+                    if (position <= badCount) {
+                        row.classList.add("badRezult");
+                    } else if (position <= normalCount + badCount) {
+                        row.classList.add("normalRezult");
+                    } else {
+                        row.classList.add("hightRezult");
+                    }
+                });
+            });
+        }   
+        function createGroupMembersTable(membersandscores, groupName){
+            let container = document.createElement("div");
+            container.classList.add("tableContainer");
+            let name = document.createElement("p");
+            name.innerText = groupName;
+            let members = membersandscores["members"];
+            let scores = membersandscores["scores"];
+            let parent = document.querySelector("#gridMembersSection");
+            let table = document.createElement("table");
+            let header = document.createElement("tr");
+            let header1 = document.createElement("th");
+            header1.innerText = "Учасник";
+            let header2 = document.createElement("th");
+            header2.innerText = "Очки";
+            header.appendChild(header1);
+            header.appendChild(header2);
+            table.appendChild(header);
+            for(let i = 0;i<members.length;i++){
+                let tr = document.createElement("tr");
+                let td1 = document.createElement("td");
+                let td2 = document.createElement("td");
+                td1.innerText = members[i];
+                td2.innerText = scores[i];
+                td2.classList.add("tdCenter");
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                table.appendChild(tr);
+            }
+            table.classList.add("playersTable");
+            container.appendChild(name);
+            container.appendChild(table);
+            parent.appendChild(container);
+        }
+        function createGroupStageGamesTable(memberanddates, groupName){
+            let parent = document.querySelector("#gridGroupGamesSection");
+            let container = document.createElement("div");
+            let table = document.createElement("table");
+            let name = document.createElement("p");
+            name.innerText = groupName;
+            const members = memberanddates["members"];
+            const dates = memberanddates["dates"];
+            {
+                let tr = document.createElement('tr');
+                let th = document.createElement("th");
+                th.innerText = "";
+                tr.appendChild(th);
+                for(let j = 0; j<members.length;j++){
+                    let th = document.createElement("th");
+                    th.innerText = members[j];
+                    tr.appendChild(th);
+                }
+                table.appendChild(tr);
+            }
+            for(let i = 0;i<members.length;i++){
+                let tr = document.createElement("tr");
+                let th = document.createElement("th");
+                th.innerText = members[i];
+                tr.appendChild(th);
+                for(let j = 0; j<dates[i].length;j++){
+                    let td = document.createElement("td");
+                    td.innerText = dates[i][j];
+                    td.classList.add("tdCenter");
+                    tr.appendChild(td);
+                }
+                table.appendChild(tr);
+            }
+            container.classList.add("tableContainer", "stageTable");
+            table.classList.add("gamesTable");
+            container.appendChild(name);
+            container.appendChild(table);
+            parent.appendChild(container);
+        }
+        function showRegistration(){
+            document.querySelector(".form").style.display = "flex";
+        }
+
         function buttonClick(){
             event.preventDefault();
             if(checkFill()){
@@ -202,6 +418,7 @@
         document.querySelector(".button").addEventListener('touchend', function(event) {
                 event.target.classList.remove('touch');
         });
+    
     </script>
 </body>
 </html>
