@@ -123,5 +123,6 @@ def getPlayersNames():
 # Количество строк, которые вернул запрос
         cursor.close()
         connection.close()
-        return players
+        player_names = [player[0] for player in players]
+        return player_names
 print(getPlayersNames())
