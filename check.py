@@ -96,10 +96,10 @@ def sendMatchData(data):
 
         # Вставляем данные в таблицу Матчи
         query_insert_match = """
-            INSERT INTO Матчи (Игрок1, Игрок2, Победитель, idМатча)
-            VALUES (%s, %s, %s, %s)
+            INSERT INTO Матчи (Игрок1, Игрок2, Победитель, idМатча, Дата, Групповой_матч)
+            VALUES (%s, %s, %s, %s, %s, %s)
         """
-        values = (player1_code, player2_code, winner_code, data["matchID"])
+        values = (player1_code, player2_code, winner_code, data["matchID"], data["date"], data["group"])
         cursor.execute(query_insert_match, values)
 
         # Подтверждаем изменения
@@ -159,4 +159,5 @@ def getPlayersNames():
         return player_names
 
 # sendData({'steam':"1231231231", 'name':"Никита", 'tgname':"capsl"})
-# sendMatchData({"player1":"Никита", "player2":"Залупенск", "winner":"Никита", "matchID":"1231231231"})
+for i in range(10):
+    sendMatchData({"player1":"Никита", "player2":"Залупенск", "winner":"Никита", "matchID":"1231231231", "date":"2024-01-01", 'group':True})
