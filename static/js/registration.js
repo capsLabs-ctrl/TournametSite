@@ -70,12 +70,12 @@ function ShowIsRegistered(isRegistered){
 }
 async function sendData() {
 const name = document.getElementsByName("nameInput")[0].value;
-const mmr = document.getElementsByName("mmrInput")[0].value;
+const steam = document.getElementsByName("steamInput")[0].value;
 const tgname = document.getElementsByName("tgInput")[0].value;
 try {
     const dataToSend = {
         'name': name,
-        'mmr': mmr,
+        'steam': steam,
         'tgname': tgname,
     };
     const response = await fetch('https://tournametsite.onrender.com/send_data', {

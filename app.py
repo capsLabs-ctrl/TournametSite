@@ -46,10 +46,7 @@ def sendNewMatchToDB():
         data = request.get_json()
         if data is None:
             return jsonify({"error": "Invalid input"}), 400
-        username = data["name"]
-        mmr = data["mmr"]
-        tg = data["tgname"]
-        isOk = check.sendData({"name":username, "tg_name":tg, "mmr":mmr})
+        isOk = check.sendMatchData(data)
         return jsonify({"executed":isOk}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -60,10 +57,7 @@ def sendToDatabase():
         data = request.get_json()
         if data is None:
             return jsonify({"error": "Invalid input"}), 400
-        username = data["name"]
-        mmr = data["mmr"]
-        tg = data["tgname"]
-        isOk = check.sendData({"name":username, "tg_name":tg, "mmr":mmr})
+        isOk = check.sendData(data)
         return jsonify({"executed":isOk}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -71,6 +65,10 @@ def sendToDatabase():
 @app.route('/')
 def home():
     return render_template('index.html')
+
+@app.route('/grids')
+def home():
+    return render_template('gridpage.html')
     
     
 if __name__ == '__main__':

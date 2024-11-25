@@ -19,7 +19,7 @@
         <ul class="no-style-ul nav-ul">
             <li class="header-links"><a href="#first-line" class="no-style-a">О турнире</a></li>
             <li class="header-links"><a href="#second-line" class="no-style-a">Правила</a></li>
-            <li class="header-links"><a href="../templates/gridpage.html" class="no-style-a">Сетка</a></li>
+            <li class="header-links"><a href="/grids" class="no-style-a">Сетка</a></li>
             <li class="header-links hover-cursor-pointer" onclick="showAdd()">Добавить игру</li>
         </ul>
         <p class="header-links registrarion-link hover-cursor-pointer" onclick="showRegistration()">Регистрация</p>
@@ -243,6 +243,7 @@
                     const dataToSend = {
                         'player1': player1,
                         'player2': player2,
+                        'winner': winner,
                         'matchID': matchId,
                     };
                     const response = await fetch('https://tournametsite.onrender.com/add_match', {

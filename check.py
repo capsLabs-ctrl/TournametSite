@@ -42,8 +42,8 @@ def sendData(data):
         )
         cursor = connection.cursor()
         # Запрос на вставку
-        query = "INSERT INTO Учасники (Имя, Телеграм, ММР) VALUES (%s, %s, %s)"
-        values = (data["name"], data["tg_name"], data["mmr"])
+        query = "INSERT INTO Учасники (Имя, Телеграм, Цифры_стима) VALUES (%s, %s, %s)"
+        values = (data["name"], data["tgname"], data["steam"])
         cursor.execute(query, values)
 
         # Подтверждаем изменения
@@ -53,12 +53,12 @@ def sendData(data):
         cursor.close()
         connection.close()
         return True  # Успешная вставка данных
-    except Error as e:
+    except mysql.connector.Error as e:
         print(f"Error: {e}")  # Выводим описание ошибки
         return False
     
 
-def addNewGame(data):
+def sendMatchData(data):
     try:
         # Устанавливаем соединение
         connection = mysql.connector.connect(
@@ -69,21 +69,53 @@ def addNewGame(data):
             port=3306
         )
         cursor = connection.cursor()
-        # Запрос на вставку
-        query = "INSERT INTO Учасники (Имя, Телеграм, ММР) VALUES (%s, %s, %s)"
-        values = (data["name"], data["tg_name"], data["mmr"])
-        cursor.execute(query, values)
+
+        # Получаем коды игроков по их именам
+        query_get_code = "SELECT Код FROM Учасники WHERE Имя = %s"
+
+        # Получаем Код для Игрок1
+        cursor.execute(query_get_code, (data["player1"],))
+        player1_code = cursor.fetchone()
+        if player1_code is None:
+            raise ValueError(f"Игрок с именем {data['player1']} не найден в таблице Учасники")
+        player1_code = player1_code[0]
+
+        # Получаем Код для Игрок2
+        cursor.execute(query_get_code, (data["player2"],))
+        player2_code = cursor.fetchone()
+        if player2_code is None:
+            raise ValueError(f"Игрок с именем {data['player2']} не найден в таблице Учасники")
+        player2_code = player2_code[0]
+
+        # Получаем Код для Победителя
+        cursor.execute(query_get_code, (data["winner"],))
+        winner_code = cursor.fetchone()
+        if winner_code is None:
+            raise ValueError(f"Игрок с именем {data['winner']} не найден в таблице Учасники")
+        winner_code = winner_code[0]
+
+        # Вставляем данные в таблицу Матчи
+        query_insert_match = """
+            INSERT INTO Матчи (Игрок1, Игрок2, Победитель, idМатча)
+            VALUES (%s, %s, %s, %s)
+        """
+        values = (player1_code, player2_code, winner_code, data["matchID"])
+        cursor.execute(query_insert_match, values)
 
         # Подтверждаем изменения
         connection.commit()
-        print(f"Inserted {cursor.rowcount} row(s).")  # Выводим количество добавленных строк
+        print(f"Матч добавлен: {cursor.rowcount} строка(и).")
 
         cursor.close()
         connection.close()
-        return True  # Успешная вставка данных
-    except Error as e:
-        print(f"Error: {e}")  # Выводим описание ошибки
+        return True
+    except mysql.connector.Error as e:
+        print(f"Ошибка: {e}")
         return False
+    except ValueError as e:
+        print(f"Ошибка: {e}")
+        return False
+    
 def checkNameIsUnicue(name):
         # Устанавливаем соединение
         connection = mysql.connector.connect(
@@ -125,4 +157,6 @@ def getPlayersNames():
         connection.close()
         player_names = [player[0].rstrip() for player in players]
         return player_names
-print(getPlayersNames())
+
+# sendData({'steam':"1231231231", 'name':"Никита", 'tgname':"capsl"})
+# sendMatchData({"player1":"Никита", "player2":"Залупенск", "winner":"Никита", "matchID":"1231231231"})
