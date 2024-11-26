@@ -193,7 +193,7 @@
                 const hash = await hashString(passwordInput);
             
                 // Лучше вынести хеш в конфигурацию, а не хардкодить в коде
-                let is_same = await sendPassword();
+                let is_same = await sendPassword(hash);
                 // Сравниваем хеши
                 if (is_same) {
                     document.querySelector("#addGameButton").disabled = false;
