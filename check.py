@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 import mysql.connector
 from itertools import combinations
-from collections import deque
 
 def check_telegram_username(username):
     url = f"https://t.me/{username}"
