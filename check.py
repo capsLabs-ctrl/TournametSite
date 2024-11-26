@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import mysql.connector
 from itertools import combinations
+import random
 
 def check_telegram_username(username):
     url = f"https://t.me/{username}"
@@ -231,8 +232,9 @@ def getWinners():
     player_points = {player[0].strip(): player[1] for player in players}
     return player_points
 
-def generate_schedule(groups, max_matches_per_day=4):
+def generate_schedule(groups, max_matches_per_day=4, seed=42):
     schedule = []  # Список, в котором будем хранить расписание по дням
+    random.seed(seed)  # Зафиксировать seed для детерминированных случайных чисел
     for group in groups:
         # Получаем все возможные пары игроков в группе
         matches = list(combinations(group, 2))
@@ -241,8 +243,7 @@ def generate_schedule(groups, max_matches_per_day=4):
         group_schedule = []
         
         # Перемешиваем список матчей для равномерного распределения
-        from random import shuffle
-        shuffle(matches)
+        random.shuffle(matches)
 
         # Разбиваем матчи на дни, соблюдая лимит по матчам в день
         while matches:
@@ -253,6 +254,7 @@ def generate_schedule(groups, max_matches_per_day=4):
         schedule.append(group_schedule)
     
     return schedule
+
 players, scores, schedule = getGroups()
 # for i, group_schedule in enumerate(schedule):
 #     print(f"Группа {i+1}:")
