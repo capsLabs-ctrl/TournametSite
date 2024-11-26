@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import mysql.connector
 from itertools import combinations
+from functools import cmp_to_key
 import random
 
 def check_telegram_username(username):
@@ -279,7 +280,7 @@ def compare_players(player1, player2, scores, db_check_match):
 def sort_players_by_scores(players_by_groups, players_scores, db_check_match):
     """
     Сортирует игроков в каждой группе с учётом очков и результатов матчей.
-    
+
     players_by_groups: список групп с игроками
     players_scores: список очков игроков в группах
     db_check_match: функция для проверки результатов матчей в базе данных
@@ -290,16 +291,22 @@ def sort_players_by_scores(players_by_groups, players_scores, db_check_match):
     for group, scores in zip(players_by_groups, players_scores):
         # Создаём словарь {имя игрока: очки} для удобства
         scores_dict = {player: score for player, score in zip(group, scores)}
-        # Сортируем группу с кастомной функцией
-        sorted_group = sorted(group, key=lambda player: (-scores_dict[player], player))
-        sorted_group.sort(key=lambda p: p, cmp=lambda x, y: compare_players(x, y, scores_dict, db_check_match))
+
+        # Сортируем группу с использованием cmp_to_key
+        sorted_group = sorted(
+            group, 
+            key=cmp_to_key(lambda x, y: compare_players(x, y, scores_dict, db_check_match))
+        )
+        
         # Пересобираем отсортированные очки
         sorted_scores = [scores_dict[player] for player in sorted_group]
+
         # Добавляем в итоговые списки
         sorted_players_by_groups.append(sorted_group)
         sorted_players_scores.append(sorted_scores)
 
     return sorted_players_by_groups, sorted_players_scores
+
 def db_check_match(player1, player2):
     """
     Проверяет результаты матчей между двумя игроками в базе данных.
@@ -349,7 +356,7 @@ def db_check_match(player1, player2):
 #     print(f"Победитель: {result}")
 # else:
 #     print("Матч между игроками не найден.")
-# players, scores, schedule = getGroups()
+players, scores, schedule = getGroups()
 # for i, group_schedule in enumerate(schedule):
 #     print(f"Группа {i+1}:")
 #     for day, matches in enumerate(group_schedule, 1):
