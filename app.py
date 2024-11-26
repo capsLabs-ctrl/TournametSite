@@ -59,6 +59,16 @@ def sendNewMatchToDB():
         return jsonify({"executed":isOk}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+@app.route('/check_password', methods=['POST'])
+def checkCorrectPassword():
+    try:
+        data = request.get_json()
+        if data is None:
+            return jsonify({"error": "Invalid input"}), 400
+        isOk = data["hash"] == "de34d10f09c2800918c27c04b3936ab25ce958de6021b846226e8c78f43207f4"
+        return jsonify({"is_same":isOk}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
     
 @app.route('/send_data', methods=['POST'])
 def sendToDatabase():
