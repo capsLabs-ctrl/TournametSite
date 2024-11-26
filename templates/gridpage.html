@@ -167,7 +167,7 @@
             const members = memberanddates["members"];
             const schedule = memberanddates["schedule"];
             const firstDay = new Date("2025-01-01");
-            const dates = generateGameSchedule(members, schedule, firstDay);
+            const dates = generateGameSchedule(schedule,members, firstDay);
             {
                 let tr = document.createElement('tr');
                 let th = document.createElement("th");
@@ -201,7 +201,6 @@
         }
         function generateGameSchedule(group, players, firstDay) {
             let array = [];
-            console.log(1);
             players.forEach((player, index) => {
                 array.push([]);
                 for(let i = 0; i<players.length;i++){
@@ -209,7 +208,6 @@
                         array[index].push("-");
                     }
                     else{
-                        console.log(player + " ||| " + players[i]);
                         for(let j =0; j<group.length;j++){
                             if(group[j].some(pair => (pair[0]==player && pair[1]==players[i]) || (pair[1]==player && pair[0]==players[i])) === true){
                                 let date =new Date(firstDay);
