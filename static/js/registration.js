@@ -36,7 +36,10 @@ function buttonClick(){
 function checkFill(){
     const name = document.getElementsByName("nameInput")[0].value;
     const tgname = document.getElementsByName("tgInput")[0].value;
-    return name!="" && tgname!="";
+    const steam = document.getElementsByName("tgInput")[0].value;
+    if(name.length>10)
+        return false;
+    return name!=="" && tgname!=="" && steam!=="";
 }
 function StopAnimation(isOk){
     icon = document.getElementById("icon");
@@ -69,39 +72,39 @@ function ShowIsRegistered(isRegistered){
     }
 }
 async function sendData() {
-const name = document.getElementsByName("nameInput")[0].value;
-const steam = document.getElementsByName("steamInput")[0].value;
-const tgname = document.getElementsByName("tgInput")[0].value;
-try {
-    const dataToSend = {
-        'name': name,
-        'steam': steam,
-        'tgname': tgname,
-    };
-    const response = await fetch('https://tournametsite.onrender.com/send_data', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json' 
-        },  
-        body: JSON.stringify(dataToSend)
-    });
-    const data = await response.json();  // Получаем данные из ответа
-    if (!data["executed"]){
-        document.querySelector("#error-message").innerText = "Ошибка при добавлении в базу данных";
-        document.querySelector("#error-message").classList.add("show-error");
-        document.querySelector("#error-message").classList.remove("hide-error");
-        StopAnimation(false);
+    const name = document.getElementsByName("nameInput")[0].value;
+    const steam = document.getElementsByName("steamInput")[0].value;
+    const tgname = document.getElementsByName("tgInput")[0].value;
+    try {
+        const dataToSend = {
+            'name': name,
+            'steam': steam,
+            'tgname': tgname,
+        };
+        const response = await fetch('https://tournametsite.onrender.com/send_data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json' 
+            },  
+            body: JSON.stringify(dataToSend)
+        });
+        const data = await response.json();  // Получаем данные из ответа
+        if (!data["executed"]){
+            document.querySelector("#error-message").innerText = "Ошибка при добавлении в базу данных";
+            document.querySelector("#error-message").classList.add("show-error");
+            document.querySelector("#error-message").classList.remove("hide-error");
+            StopAnimation(false);
+        }
+        else{
+            document.querySelector("#error-message").innerText = "Участник успешно добавлен!";
+            document.querySelector("#error-message").classList.add("show-message");
+            document.querySelector("#error-message").classList.remove("hide-error");
+            StopAnimation(true);
+        }
     }
-    else{
-        document.querySelector("#error-message").innerText = "Участник успешно добавлен!";
-        document.querySelector("#error-message").classList.add("show-message");
-        document.querySelector("#error-message").classList.remove("hide-error");
-        StopAnimation(true);
+    catch (error) {
+        console.error('Ошибка:', error);
     }
-}
-catch (error) {
-    console.error('Ошибка:', error);
-}
 }
 async function CheckIsExsistTG(){
     const name = document.getElementsByName("tgInput")[0].value;
