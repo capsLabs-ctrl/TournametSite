@@ -3,7 +3,14 @@ import numpy as np
 import check
 import os
 
+players_by_groups, players_scores, schedule = check.getGroups()
+def changeGroups():
+    players_by_groups, players_scores, schedule = check.getGroups()
+
+
 app = Flask(__name__)
+
+
 
 @app.route('/check_tg', methods=['POST'])
 def checkTelegram():
@@ -47,6 +54,8 @@ def sendNewMatchToDB():
         if data is None:
             return jsonify({"error": "Invalid input"}), 400
         isOk = check.sendMatchData(data)
+        if isOk == True:
+            changeGroups()
         return jsonify({"executed":isOk}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -58,6 +67,8 @@ def sendToDatabase():
         if data is None:
             return jsonify({"error": "Invalid input"}), 400
         isOk = check.sendData(data)
+        if isOk == True:
+            changeGroups()
         return jsonify({"executed":isOk}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -67,7 +78,6 @@ def playersDivision():
         data = request.get_json()
         if data is None:
             return jsonify({"error": "Invalid input"}), 400
-        players_by_groups,players_scores,schedule = check.getGroups()
         return jsonify({"players_by_groups":players_by_groups, "players_scores":players_scores, "schedule":schedule}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500

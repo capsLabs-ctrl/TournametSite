@@ -206,7 +206,7 @@ def getGroups():
             j+=1
         i+=1
     ##Сортировка игроков по очкам
-    sorted_players_by_groups, sorted_players_scores = sort_players_by_scores(players_by_groups, players_scores, db_check_match)
+    sorted_players_by_groups, sorted_players_scores = sort_players_by_scores(players_by_groups, players_scores)
     schedule = generate_schedule(sorted_players_by_groups)
     return sorted_players_by_groups, sorted_players_scores, schedule
 
@@ -253,14 +253,7 @@ def generate_schedule(groups, max_matches_per_day=4, seed=42):
     return schedule
 
 
-def compare_players(player1, player2, scores, db_check_match):
-    """
-    Сравнивает двух игроков по их очкам и результатам матчей.
-    
-    player1, player2: имена игроков
-    scores: словарь {имя игрока: очки}
-    db_check_match: функция для проверки результатов матчей в базе данных
-    """
+def compare_players(player1, player2, scores, games):
     score1 = scores[player1]
     score2 = scores[player2]
     if score1 > score2:
@@ -269,7 +262,11 @@ def compare_players(player1, player2, scores, db_check_match):
         return 1  # player2 выше
     else:
         # Если очки равны, проверяем результат матча
-        match_result = db_check_match(player1, player2)
+        match_result = None
+        for game in games:
+            if game["Игрок1"] == player1 and game["Игрок2"] == player2:
+                match_result = game["Победитель"]
+                break
         if match_result == player1:
             return -1  # player1 выше
         elif match_result == player2:
@@ -277,14 +274,8 @@ def compare_players(player1, player2, scores, db_check_match):
         else:
             return 0  # оставляем как есть, если матчей нет
         
-def sort_players_by_scores(players_by_groups, players_scores, db_check_match):
-    """
-    Сортирует игроков в каждой группе с учётом очков и результатов матчей.
+def sort_players_by_scores(players_by_groups, players_scores):
 
-    players_by_groups: список групп с игроками
-    players_scores: список очков игроков в группах
-    db_check_match: функция для проверки результатов матчей в базе данных
-    """
     sorted_players_by_groups = []
     sorted_players_scores = []
 
@@ -293,9 +284,10 @@ def sort_players_by_scores(players_by_groups, players_scores, db_check_match):
         scores_dict = {player: score for player, score in zip(group, scores)}
 
         # Сортируем группу с использованием cmp_to_key
+        games = get_games()
         sorted_group = sorted(
             group, 
-            key=cmp_to_key(lambda x, y: compare_players(x, y, scores_dict, db_check_match))
+            key=cmp_to_key(lambda x, y: compare_players(x, y, scores_dict, games))
         )
         
         # Пересобираем отсортированные очки
@@ -307,11 +299,8 @@ def sort_players_by_scores(players_by_groups, players_scores, db_check_match):
 
     return sorted_players_by_groups, sorted_players_scores
 
-def db_check_match(player1, player2):
-    """
-    Проверяет результаты матчей между двумя игроками в базе данных.
-    Возвращает имя победителя или None, если матча нет.
-    """
+def get_games():
+    import mysql.connector
     try:
         # Установление соединения с базой данных
         connection = mysql.connector.connect(
@@ -321,42 +310,38 @@ def db_check_match(player1, player2):
             database="bhihmdlzeva9nple8r0v",
             port=3306
         )
-        cursor = connection.cursor()
+        cursor = connection.cursor(dictionary=True)  # Включаем режим словарей
 
-        # Параметризованный запрос для безопасности
+        # Параметризованный запрос
         query = """
-        SELECT Учасники.Имя
+        SELECT Учасники.Имя as Победитель, p1.Имя as Игрок1, p2.Имя as Игрок2
         FROM Матчи
         INNER JOIN Учасники ON Матчи.Победитель = Учасники.Код
         INNER JOIN Учасники as p1 ON p1.Код = Матчи.Игрок1 
         INNER JOIN Учасники as p2 ON p2.Код = Матчи.Игрок2
-        WHERE 
-            (p1.Имя = %s AND p2.Имя = %s) OR 
-            (p1.Имя = %s AND p2.Имя = %s)
         """
-        cursor.execute(query, (player1, player2, player2, player1))
-        result = cursor.fetchone()  # Получаем только первую строку
+        cursor.execute(query)
+        results = cursor.fetchall()
 
-        if result:
-            return result[0]  # Возвращаем имя победителя (первый элемент кортежа)
-        return None
+        if results:
+            return results
+        return []
 
     except mysql.connector.Error as err:
         print(f"Ошибка при работе с базой данных: {err}")
-        return None
+        return []
 
     finally:
         if connection.is_connected():
             cursor.close()
             connection.close()
 
-
-# result = db_check_match("Артем Николенко", "Зевс бог МОЛНИЙ!!!!")
 # if result:
 #     print(f"Победитель: {result}")
 # else:
 #     print("Матч между игроками не найден.")
-players, scores, schedule = getGroups()
+# players, scores, schedule = getGroups()
+print(getGroups())
 # for i, group_schedule in enumerate(schedule):
 #     print(f"Группа {i+1}:")
 #     for day, matches in enumerate(group_schedule, 1):
