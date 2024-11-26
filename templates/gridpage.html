@@ -28,12 +28,14 @@
             </ul>
             <h4 class="" style="margin-top: 40px; margin-bottom: 40px; margin-left: 5%;">Список игроков</h4>
             <section id="playersGridSection" style="margin-bottom: 40px;">
+                <section class="loading"><h1 class="loadText">Загрузка</h1></section>
             </section>
         </section>
         <div class="line"></div>
         <section class="section grid-section lrt-gradient">
             <h4 class="" style="margin-top: 40px; margin-bottom: 40px; margin-left: 5%;" >Расписание груповых матчей</h4>
             <section id="groupGamesGridSection" style="margin-bottom: 40px;">
+                <section class="loading"><h1 class="loadText">Загрузка</h1></section>
             </section>
         </section>
     </main>
@@ -63,6 +65,9 @@
 
     <script src="../static/js/registration.js"></script>
     <script>
+        document.addEventListener("DOMContentLoaded",() => {
+            startLoading();
+        })
         let members = [];
         let scores = [];
         let schedule = [];
@@ -70,10 +75,11 @@
             normalCount: 2,
             badCount:2,
         };
-        fetchData();    
+        // fetchData();    
         function fillTables(members, scores){
             const groupNames = ["Группа А", "Группа Б", "Группа В", "Группа Г"];
             let i = 0;
+            stopLoading();
             groupNames.forEach((name) =>{
                 createGroupMembersTable({members:members[i], scores:scores[i]}, name);
                 createGroupStageGamesTable({members:members[i], schedule:schedule[i]}, name)
@@ -219,6 +225,35 @@
                 }
             });
             return array;
+        }
+        function startLoading(){
+            startInterval();
+        }
+        function stopLoading(){
+            stopInterval();
+        }
+        let intervalId;
+        function startInterval() {
+            if (!intervalId) {
+                intervalId = setInterval(() => {
+                    let h1s = document.querySelectorAll(".loadText");
+                    h1s.forEach(h1 =>{
+                        let text = h1.innerText;
+                        h1.innerText = text.split(" ").length < 4? text + " .": "Загрузка";
+                    })
+                }, 150);
+            }
+        }
+
+        function stopInterval() {
+            if (intervalId) {
+                document.querySelectorAll(".loading").forEach(section => {
+                    section.classList.remove("loading");
+                    section.classList.add("hidden");
+                })
+                clearInterval(intervalId);
+                intervalId = null;
+            }
         }
     </script>
 </body>
