@@ -65,24 +65,18 @@
     <script>
         let members = [];
         let scores = [];
+        let schedule = [];
         const counts = {
             normalCount: 2,
             badCount:2,
         };
         fetchData();    
         function fillTables(members, scores){
-            const dates =[
-                ["-", "01.01.2025", "01.01.2025","01.01.2025","01.01.2025"],
-                ["01.01.2025", "-", "01.01.2025","01.01.2025","01.01.2025"],
-                ["01.01.2025", "01.01.2025", "-","01.01.2025","01.01.2025"],
-                ["01.01.2025", "01.01.2025", "01.01.2025","-","01.01.2025"],
-                ["01.01.2025", "01.01.2025", "01.01.2025","01.01.2025","-"],
-            ]
             const groupNames = ["Группа А", "Группа Б", "Группа В", "Группа Г"];
             let i = 0;
             groupNames.forEach((name) =>{
                 createGroupMembersTable({members:members[i], scores:scores[i]}, name);
-                createGroupStageGamesTable({members:members[i], dates:dates}, name)
+                createGroupStageGamesTable({members:members[i], schedule:schedule[i]}, name)
                 i++;
             })
             paintDataGrid(counts);
@@ -104,6 +98,7 @@
             const data = await response.json();
             members = data["players_by_groups"];
             scores = data["players_scores"];
+            schedule = data["schedule"];
         }
         catch (error) {
             console.error('Ошибка:', error);
@@ -170,7 +165,9 @@
             name.innerText = groupName;
             name.style["margin-bottom"] = "10px";
             const members = memberanddates["members"];
-            const dates = memberanddates["dates"];
+            const schedule = memberanddates["schedule"];
+            const firstDay = new Date("2025-01-01");
+            const dates = generateGameSchedule(members, schedule, firstDay);
             {
                 let tr = document.createElement('tr');
                 let th = document.createElement("th");
@@ -201,6 +198,29 @@
             container.appendChild(name);
             container.appendChild(table);
             parent.appendChild(container);
+        }
+        function generateGameSchedule(group, players, firstDay) {
+            let array = [];
+            console.log(1);
+            players.forEach((player, index) => {
+                array.push([]);
+                for(let i = 0; i<players.length;i++){
+                    if(players[i] === player){
+                        array[index].push("-");
+                    }
+                    else{
+                        console.log(player + " ||| " + players[i]);
+                        for(let j =0; j<group.length;j++){
+                            if(group[j].some(pair => (pair[0]==player && pair[1]==players[i]) || (pair[1]==player && pair[0]==players[i])) === true){
+                                let date =new Date(firstDay);
+                                date.setDate(date.getDate() + j);
+                                array[index].push(date.toLocaleDateString());
+                            }
+                        }
+                    }
+                }
+            });
+            return array;
         }
     </script>
 </body>

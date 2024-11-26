@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import mysql.connector
+from itertools import combinations
+from collections import deque
 
 def check_telegram_username(username):
     url = f"https://t.me/{username}"
@@ -208,7 +210,8 @@ def getGroups():
         sorted_group, sorted_scores = zip(*sorted_group_with_scores)
         sorted_players_by_groups.append(list(sorted_group))
         sorted_players_scores.append(list(sorted_scores))
-    return sorted_players_by_groups, sorted_players_scores
+    schedule = generate_schedule(sorted_players_by_groups)
+    return sorted_players_by_groups, sorted_players_scores, schedule
 
 def getWinners():
     # Устанавливаем соединение
@@ -229,7 +232,35 @@ def getWinners():
     player_points = {player[0].strip(): player[1] for player in players}
     return player_points
 
-players, scores = getGroups()
-print(players,scores)
+def generate_schedule(groups, max_matches_per_day=4):
+    schedule = []  # Список, в котором будем хранить расписание по дням
+    for group in groups:
+        # Получаем все возможные пары игроков в группе
+        matches = list(combinations(group, 2))
+        
+        # Структура для хранения матчей по дням
+        group_schedule = []
+        
+        # Перемешиваем список матчей для равномерного распределения
+        from random import shuffle
+        shuffle(matches)
+
+        # Разбиваем матчи на дни, соблюдая лимит по матчам в день
+        while matches:
+            day_matches = matches[:max_matches_per_day]
+            group_schedule.append(day_matches)
+            matches = matches[max_matches_per_day:]
+        
+        schedule.append(group_schedule)
+    
+    return schedule
+players, scores, schedule = getGroups()
+# for i, group_schedule in enumerate(schedule):
+#     print(f"Группа {i+1}:")
+#     for day, matches in enumerate(group_schedule, 1):
+#         print(f"  День {day}: {', '.join([f'{match[0]} vs {match[1]}' for match in matches])}")
+#     print("\n")
+print(players)
+print(schedule)
 # sendData({'steam':"1231231231", 'name':"Никита", 'tgname':"capsl"})
 # sendMatchData({"player1":"Никита", "player2":"Залупенск", "winner":"Никита", "matchID":"1231231231", "date":"2024-01-01", 'group':True})

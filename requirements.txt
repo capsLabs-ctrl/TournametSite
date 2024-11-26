@@ -3,3 +3,5 @@ numpy
 mysql-connector-python
 bs4
 requests
+collections
+itertools

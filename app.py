@@ -67,8 +67,8 @@ def playersDivision():
         data = request.get_json()
         if data is None:
             return jsonify({"error": "Invalid input"}), 400
-        players_by_groups,players_scores = check.getGroups()
-        return jsonify({"players_by_groups":players_by_groups, "players_scores":players_scores}), 200
+        players_by_groups,players_scores,schedule = check.getGroups()
+        return jsonify({"players_by_groups":players_by_groups, "players_scores":players_scores, "schedule":schedule}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
