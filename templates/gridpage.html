@@ -175,7 +175,7 @@
             const members = memberanddates["members"];
             const schedule = memberanddates["schedule"];
             const firstDay = new Date("2025-01-01");
-            const dates = generateGameSchedule(schedule,members, firstDay);
+            const dates = generateGameSchedule(schedule,members, games, firstDay);
             {
                 let tr = document.createElement('tr');
                 let th = document.createElement("th");
