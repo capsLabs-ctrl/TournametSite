@@ -154,6 +154,8 @@ table {
   }
 
   th, td {
+    width: 100px;
+    text-overflow: ellipsis;
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
