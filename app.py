@@ -12,40 +12,11 @@ def changeGroups():
     global players_by_groups, players_scores, schedule, games
     players_by_groups, players_scores, schedule, games = check.getGroups()
 
-STEAM_API_KEY = "73A338D501B0BE6240DFB084A570AA17"
+
 app = Flask(__name__)
 
 
-@app.route('/get_match_data', methods=['GET'])
-def get_match_data():
-    try:
-        logging.debug("Маршрут /get_match_data вызван")
 
-        # Получаем Match ID
-        match_id = request.args.get('match_id')
-        if not match_id:
-            logging.warning("Match ID отсутствует в запросе")
-            return jsonify({"error": "Match ID is required"}), 400
-
-        logging.info(f"Получен Match ID: {match_id}")
-
-        # Запрос к Steam API
-        steam_api_url = f"https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v1/?key={STEAM_API_KEY}&match_id={match_id}"
-        logging.debug(f"Отправка запроса к Steam API: {steam_api_url}")
-        
-        response = requests.get(steam_api_url)
-
-        if response.status_code != 200:
-            logging.error(f"Ошибка от Steam API: {response.status_code}, текст: {response.text}")
-            return jsonify({"error": "Failed to fetch data from Steam API"}), response.status_code
-
-        logging.debug("Успешно получен ответ от Steam API")
-
-        return jsonify(response.json())
-    except Exception as e:
-        logging.critical(f"Критическая ошибка: {e}")
-        return jsonify({"error": str(e)}), 500
-    
 @app.route('/check_tg', methods=['POST'])
 def checkTelegram():
     try:

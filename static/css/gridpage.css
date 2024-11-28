@@ -237,15 +237,3 @@ table {
 .loadText{
     font-size: 30pt;
 }
-
-#context-menu{
-    background-color: #3a3a3a;
-    width: 300px;
-    height: 200px;
-    position: absolute;
-    top: 300px;
-    left: 100px;
-}
-.showen{
-    display: flex;
-}
