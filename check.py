@@ -199,12 +199,6 @@ def getGroups():
                 players_scores[i].append(0)
             j+=1
         i+=1
-    while i<len(players_by_groups):
-        j = 0
-        while j<len(players_by_groups[i]):
-
-            j+=1
-        i+=1
     ##Сортировка игроков по очкам
     sorted_players_by_groups, sorted_players_scores, games = sort_players_by_scores(players_by_groups, players_scores)
     schedule = generate_schedule(sorted_players_by_groups)
