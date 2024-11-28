@@ -68,6 +68,7 @@
     </div>
     <script src="../static/js/registration.js"></script>
     <script>
+        getDataAboutGame();
         async function getDataAboutGame(){
             try {
                 const response = await fetch(`GET https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v1/?key={73A338D501B0BE6240DFB084A570AA17}&match_id={8057421255}`);
