@@ -2,16 +2,37 @@ from flask import Flask, request, jsonify, render_template
 import numpy as np
 import check
 import os
+import requests
 
 players_by_groups, players_scores, schedule, games = check.getGroups()
 def changeGroups():
     global players_by_groups, players_scores, schedule, games
     players_by_groups, players_scores, schedule, games = check.getGroups()
 
-
+STEAM_API_KEY = "73A338D501B0BE6240DFB084A570AA17"
 app = Flask(__name__)
 
 
+@app.route('/get_match_data', methods=['GET'])
+def get_match_data():
+    try:
+        # Получаем Match ID из запроса
+        match_id = request.args.get('match_id')
+        if not match_id:
+            return jsonify({"error": "Match ID is required"}), 400
+
+        # Отправляем запрос к Steam API
+        steam_api_url = f"https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v1/?key={STEAM_API_KEY}&match_id={match_id}"
+        response = requests.get(steam_api_url)
+
+        # Проверяем успешность запроса
+        if response.status_code != 200:
+            return jsonify({"error": "Failed to fetch data from Steam API"}), response.status_code
+
+        # Возвращаем JSON-ответ от Steam API клиенту
+        return jsonify(response.json())
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/check_tg', methods=['POST'])
 def checkTelegram():
