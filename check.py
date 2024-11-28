@@ -206,9 +206,9 @@ def getGroups():
             j+=1
         i+=1
     ##Сортировка игроков по очкам
-    sorted_players_by_groups, sorted_players_scores = sort_players_by_scores(players_by_groups, players_scores)
+    sorted_players_by_groups, sorted_players_scores, games = sort_players_by_scores(players_by_groups, players_scores)
     schedule = generate_schedule(sorted_players_by_groups)
-    return sorted_players_by_groups, sorted_players_scores, schedule
+    return sorted_players_by_groups, sorted_players_scores, schedule, games
 
 def getWinners():
     # Устанавливаем соединение
@@ -264,7 +264,7 @@ def compare_players(player1, player2, scores, games):
         # Если очки равны, проверяем результат матча
         match_result = None
         for game in games:
-            if game["Игрок1"] == player1 and game["Игрок2"] == player2:
+            if (game["Игрок1"] == player1 and game["Игрок2"] == player2) or (game["Игрок2"] == player1 and game["Игрок1"] == player2):
                 match_result = game["Победитель"]
                 break
         if match_result == player1:
@@ -297,7 +297,7 @@ def sort_players_by_scores(players_by_groups, players_scores):
         sorted_players_by_groups.append(sorted_group)
         sorted_players_scores.append(sorted_scores)
 
-    return sorted_players_by_groups, sorted_players_scores
+    return sorted_players_by_groups, sorted_players_scores, games
 
 def get_games():
     import mysql.connector

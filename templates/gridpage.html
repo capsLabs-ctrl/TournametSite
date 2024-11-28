@@ -71,6 +71,7 @@
         let members = [];
         let scores = [];
         let schedule = [];
+        let games = [];
         const counts = {
             normalCount: 2,
             badCount:2,
@@ -105,6 +106,7 @@
             members = data["players_by_groups"];
             scores = data["players_scores"];
             schedule = data["schedule"];
+            games = data["games"];
         }
         catch (error) {
             console.error('Ошибка:', error);
@@ -205,27 +207,53 @@
             container.appendChild(table);
             parent.appendChild(container);
         }
-        function generateGameSchedule(group, players, firstDay) {
-            let array = [];
-            players.forEach((player, index) => {
-                array.push([]);
-                for(let i = 0; i<players.length;i++){
-                    if(players[i] === player){
-                        array[index].push("-");
-                    }
-                    else{
-                        for(let j =0; j<group.length;j++){
-                            if(group[j].some(pair => (pair[0]==player && pair[1]==players[i]) || (pair[1]==player && pair[0]==players[i])) === true){
-                                let date =new Date(firstDay);
-                                date.setDate(date.getDate() + j);
-                                array[index].push(date.toLocaleDateString());
+        function generateGameSchedule(group, players, games, firstDay) {
+    let array = [];
+    
+    players.forEach((player, index) => {
+        // Создаём подмассив для каждого игрока
+        array.push([]);
+
+        for (let i = 0; i < players.length; i++) {
+            if (players[i] === player) {
+                // Если игрок совпадает с самим собой, записываем "-"
+                array[index].push("-");
+            } else {
+                // Внешний цикл с меткой "cycle:"
+                cycle:
+                for (let j = 0; j < group.length; j++) {
+                    // Проверяем, есть ли пара игроков в текущей группе
+                    if (
+                        group[j].some(pair => 
+                            (pair[0] === player && pair[1] === players[i]) || 
+                            (pair[1] === player && pair[0] === players[i])
+                        )
+                    ) {
+                        // Ищем игру в массиве games
+                        for (const game of games) {
+                            if (
+                                (game["Игрок1"] === player && game["Игрок2"] === players[i]) ||
+                                (game["Игрок2"] === player && game["Игрок1"] === players[i])
+                            ) {
+                                if (game["Победитель"] === player) {
+                                    array[index].push("1:0");
+                                } else {
+                                    array[index].push("0:1");
+                                }
+                                continue cycle;
                             }
                         }
+                        let date = new Date(firstDay);
+                        date.setDate(date.getDate() + j);
+                        array[index].push(date.toLocaleDateString());
                     }
                 }
-            });
-            return array;
+            }
         }
+    });
+
+    return array;
+}
         function startLoading(){
             startInterval();
         }
@@ -244,7 +272,6 @@
                 }, 150);
             }
         }
-
         function stopInterval() {
             if (intervalId) {
                 document.querySelectorAll(".loading").forEach(section => {

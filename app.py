@@ -3,9 +3,10 @@ import numpy as np
 import check
 import os
 
-players_by_groups, players_scores, schedule = check.getGroups()
+players_by_groups, players_scores, schedule, games = check.getGroups()
 def changeGroups():
-    players_by_groups, players_scores, schedule = check.getGroups()
+    global players_by_groups, players_scores, schedule, games
+    players_by_groups, players_scores, schedule, games = check.getGroups()
 
 
 app = Flask(__name__)
@@ -88,7 +89,7 @@ def playersDivision():
         data = request.get_json()
         if data is None:
             return jsonify({"error": "Invalid input"}), 400
-        return jsonify({"players_by_groups":players_by_groups, "players_scores":players_scores, "schedule":schedule}), 200
+        return jsonify({"players_by_groups":players_by_groups, "players_scores":players_scores, "schedule":schedule, "games":games}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
