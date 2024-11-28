@@ -21,19 +21,30 @@ def get_match_data():
         if not match_id:
             return jsonify({"error": "Match ID is required"}), 400
 
+        # Логируем Match ID
+        print(f"Получен Match ID: {match_id}")
+
         # Отправляем запрос к Steam API
         steam_api_url = f"https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v1/?key={STEAM_API_KEY}&match_id={match_id}"
+        print(f"Запрос к Steam API: {steam_api_url}")
+        
         response = requests.get(steam_api_url)
 
         # Проверяем успешность запроса
         if response.status_code != 200:
+            print(f"Ошибка от Steam API: {response.status_code} - {response.text}")
             return jsonify({"error": "Failed to fetch data from Steam API"}), response.status_code
+
+        # Логируем успешный ответ
+        print(f"Ответ от Steam API: {response.json()}")
 
         # Возвращаем JSON-ответ от Steam API клиенту
         return jsonify(response.json())
     except Exception as e:
+        # Логируем ошибку
+        print(f"Ошибка сервера: {str(e)}")
         return jsonify({"error": str(e)}), 500
-
+    
 @app.route('/check_tg', methods=['POST'])
 def checkTelegram():
     try:
