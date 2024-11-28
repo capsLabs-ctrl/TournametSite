@@ -208,9 +208,9 @@
             parent.appendChild(container);
         }
         function generateGameSchedule(group, players, games, firstDay) {
-    let array = [];
-    
-    players.forEach((player, index) => {
+            let array = [];
+            
+            players.forEach((player, index) => {
         // Создаём подмассив для каждого игрока
         array.push([]);
 
@@ -236,9 +236,9 @@
                                 (game["Игрок2"] === player && game["Игрок1"] === players[i])
                             ) {
                                 if (game["Победитель"] === player) {
-                                    array[index].push("1:0");
+                                    array[index].push("1:0\n");
                                 } else {
-                                    array[index].push("0:1");
+                                    array[index].push("0:1\n");
                                 }
                                 continue cycle;
                             }
