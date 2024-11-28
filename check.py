@@ -335,7 +335,7 @@ def get_games():
 # else:
 #     print("Матч между игроками не найден.")
 # players, scores, schedule = getGroups()
-print(getGroups())
+# print(getGroups())
 # for i, group_schedule in enumerate(schedule):
 #     print(f"Группа {i+1}:")
 #     for day, matches in enumerate(group_schedule, 1):
