@@ -64,10 +64,26 @@
         </section>
     </section>
     <div class="hidden showen" id="context-menu">
-        
+        <a href=""></a>
     </div>
     <script src="../static/js/registration.js"></script>
     <script>
+        async function getDataAboutGame(){
+            try {
+                const response = await fetch(`GET https://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v1/?key={73A338D501B0BE6240DFB084A570AA17}&match_id={8057421255}`);
+                if (!response.ok) throw new Error("Ошибка загрузки данных");
+                const data = await response.json();
+
+                console.log(`
+                    <h2>Результаты матча</h2>
+                    <p>Матч ID: ${data.match_id}</p>
+                    <p>Продолжительность: ${Math.floor(data.duration / 60)} мин ${data.duration % 60} сек</p>
+                    <p>Победитель: ${data.radiant_win ? 'Свет' : 'Тьма'}</p>
+                `);
+            } catch (error) {
+                console.log(`<p>Ошибка: ${error.message}</p>`);
+            }
+        }
         document.addEventListener("DOMContentLoaded",() => {
             startLoading();
         })
